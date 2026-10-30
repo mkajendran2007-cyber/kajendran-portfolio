@@ -1,0 +1,27 @@
+/* Hero refinement v5: clearer hierarchy, breathing room and signature motion */
+.hero{grid-template-columns:minmax(0,1.12fr) minmax(330px,.88fr);gap:clamp(38px,5vw,76px);min-height:700px;padding-top:82px;padding-bottom:92px}
+.hero-copy{max-width:650px}
+.hero-copy h1{font-size:clamp(48px,5.25vw,70px);line-height:1.09;letter-spacing:-2.7px;margin:30px 0 28px}
+.hero-name{display:block;font-size:.82em;line-height:1.05;letter-spacing:-2px;color:#087b55;margin-bottom:22px;position:relative;width:max-content;max-width:100%;animation:nameReveal .9s cubic-bezier(.2,.8,.2,1) both}
+.hero-name:after{content:"";position:absolute;left:2px;bottom:-9px;width:52px;height:3px;border-radius:9px;background:linear-gradient(90deg,#087b55,#9ad9b5);transform-origin:left;animation:underlineGrow 1s .45s ease both}
+.hero-statement{display:block}
+.hero-lead{max-width:510px;margin-top:0}
+.hero-visual{height:530px}
+.portrait-shell{animation:portraitDrift 7s ease-in-out infinite;will-change:transform}
+.orbit-one{animation:orbitSpin 24s linear infinite;transform-origin:center}
+.orbit-two{animation:orbitSpin 32s linear infinite reverse;transform-origin:center}
+.float-card{animation:cardFloat 5.5s ease-in-out infinite}
+.card-code{animation-delay:-2.4s}
+.hero-copy .eyebrow{animation:softRise .7s .1s both}
+.hero-copy .hero-lead{animation:softRise .8s .45s both}
+.hero-copy .hero-actions{animation:softRise .8s .6s both}
+.hero-copy .hero-meta{animation:softRise .8s .75s both}
+@keyframes nameReveal{from{opacity:0;transform:translateY(22px);filter:blur(7px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes underlineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes softRise{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes portraitDrift{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes orbitSpin{from{rotate:0deg}to{rotate:360deg}}
+@keyframes cardFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@media(max-width:900px){.hero{grid-template-columns:1fr .85fr;gap:24px}.hero-copy h1{font-size:clamp(43px,5.5vw,58px)}.hero-visual{height:440px}.portrait-shell{height:360px}}
+@media(max-width:680px){.hero{grid-template-columns:1fr;gap:20px;min-height:auto;padding-top:58px;padding-bottom:70px}.hero-copy{max-width:100%}.hero-copy h1{font-size:clamp(43px,10vw,60px);margin:25px 0 23px;letter-spacing:-2px}.hero-name{margin-bottom:20px}.hero-visual{height:410px;min-height:410px}.portrait-shell{width:min(290px,72%);height:360px}.hero-meta{margin-top:38px}.orbit-one,.orbit-two{max-width:100%}}
+@media(prefers-reduced-motion:reduce){.hero-name,.hero-name:after,.hero-copy .eyebrow,.hero-copy .hero-lead,.hero-copy .hero-actions,.hero-copy .hero-meta,.portrait-shell,.orbit-one,.orbit-two,.float-card{animation:none!important;transition:none!important}}

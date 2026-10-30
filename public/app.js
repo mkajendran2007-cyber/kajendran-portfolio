@@ -1,0 +1,28 @@
+const progress=document.getElementById('progress');
+const nav=document.getElementById('navLinks');
+document.getElementById('menuToggle').addEventListener('click',()=>nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max>0?scrollY/max*100:0)+'%'});
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+if(matchMedia('(pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.tilt').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform='perspective(900px) rotateY('+x*7+'deg) rotateX('+y*-7+'deg) translateY(-3px)'});card.addEventListener('pointerleave',()=>card.style.transform='perspective(900px) rotateY(0) rotateX(0) translateY(0)')})}
+(() => {
+const articles={
+rights:{category:'CONSTITUTIONAL LAW · STUDY NOTE',title:'Understanding Fundamental Rights',body:'<p>Fundamental Rights are guaranteed in Part III of the Constitution of India (Articles 12–35).</p><h3>Important groups</h3><ul><li>Right to Equality (Articles 14–18)</li><li>Right to Freedom (Articles 19–22)</li><li>Right against Exploitation (Articles 23–24)</li><li>Freedom of Religion (Articles 25–28)</li><li>Cultural and Educational Rights (Articles 29–30)</li><li>Constitutional Remedies (Article 32)</li></ul><p>High Courts also have writ jurisdiction under Article 226.</p><p class="article-cite">Study reference: Constitution of India, Part III. Check the latest official text and judgments.</p>'},
+contract:{category:'CONTRACT LAW · STUDY NOTE',title:'Essentials of a Valid Contract',body:'<p>Section 10 of the Indian Contract Act, 1872 explains when agreements become contracts.</p><h3>Core requirements</h3><ul><li>Lawful offer and valid acceptance.</li><li>Free consent as defined by the Act.</li><li>Competency of parties under Section 11.</li><li>Lawful consideration and lawful object, including Section 23.</li><li>The agreement must not be expressly declared void.</li></ul><p>Every contract is an agreement, but every agreement is not necessarily a contract.</p><p class="article-cite">Study reference: Indian Contract Act, 1872.</p>'},
+marriage:{category:'FAMILY LAW · STUDY NOTE',title:'Conditions for a Hindu Marriage',body:'<p>Section 5 of the Hindu Marriage Act, 1955 sets out conditions for a Hindu marriage.</p><h3>Main statutory conditions</h3><ul><li>Neither party has a spouse living.</li><li>Each party satisfies the mental-capacity requirements.</li><li>The bridegroom has completed 21 years and the bride 18 years.</li><li>No prohibited relationship unless a valid custom permits it.</li><li>No sapinda relationship unless a valid custom permits it.</li></ul><p>Section 7 concerns ceremonies and Section 8 deals with registration.</p><p class="article-cite">Study reference: Hindu Marriage Act, 1955, Sections 5–8. Verify current law.</p>'},
+justice:{category:'LEGAL AWARENESS · STUDY NOTE',title:'Principles of Natural Justice',body:'<p>Natural justice refers to basic standards of procedural fairness.</p><h3>Two classic principles</h3><ul><li>Audi alteram partem: hear the other side and provide a fair opportunity to respond.</li><li>Nemo judex in causa sua: no one should be a judge in their own cause.</li></ul><p>Application depends on statute, context, urgency and recognised exceptions.</p><p class="article-cite">Study reference: Indian administrative law principles. Consult current judgments.</p>'}
+};
+const grid=document.getElementById('journalGrid');
+if(grid){
+const search=document.getElementById('journalSearch');let category='all';
+function filterCards(){const q=search.value.toLowerCase();grid.querySelectorAll('.journal-card').forEach(c=>{const matchesCategory=category==='all'||c.dataset.category===category;const matchesText=(c.dataset.search+' '+c.innerText).toLowerCase().includes(q);c.hidden=!(matchesCategory&&matchesText);});}
+search.addEventListener('input',filterCards);
+document.getElementById('journalFilters').addEventListener('click',e=>{const b=e.target.closest('button[data-category]');if(!b)return;category=b.dataset.category;document.querySelectorAll('#journalFilters button').forEach(x=>x.classList.toggle('active',x===b));filterCards();});
+const modal=document.getElementById('articleModal'),content=document.getElementById('articleContent');
+grid.addEventListener('click',e=>{const b=e.target.closest('[data-article]');if(!b)return;const a=articles[b.dataset.article];if(!a)return;content.innerHTML='<div class="section-kicker">'+a.category+'</div><h2>'+a.title+'</h2>'+a.body;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';});
+function closeArticle(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+modal.addEventListener('click',e=>{if(e.target.closest('[data-close-article]'))closeArticle();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeArticle();});
+}
+})();
